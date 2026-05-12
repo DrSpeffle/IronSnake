@@ -12,7 +12,6 @@
 
 <div class="embers" id="embers"></div>
 
-
 <div class="app">
 
   <div class="hero">
@@ -20,88 +19,42 @@
     <h2>PRIDE IS FOREVER</h2>
   </div>
 
-  <div class="scores">
-
-    <div class="score-card">
-      <span>Nutrition</span>
-      <strong id="nutrition-score">0%</strong>
-      <div class="score-bar">
-        <div id="nutrition-fill" class="score-fill"></div>
-      </div>
+  <div class="overall-panel">
+    <span>Overall</span>
+    <strong id="overall-score">0%</strong>
+    <div class="overall-bar">
+      <div id="overall-fill" class="overall-fill"></div>
     </div>
-
-    <div class="score-card">
-      <span>Fitness</span>
-      <strong id="fitness-score">0%</strong>
-      <div class="score-bar">
-        <div id="fitness-fill" class="score-fill"></div>
-      </div>
-    </div>
-
-    <div class="score-card">
-      <span>Strength</span>
-      <strong id="strength-score">0%</strong>
-      <div class="score-bar">
-        <div id="strength-fill" class="score-fill"></div>
-      </div>
-    </div>
-
-    <div class="score-card">
-      <span>Mind</span>
-      <strong id="mind-score">0%</strong>
-      <div class="score-bar">
-        <div id="mind-fill" class="score-fill"></div>
-      </div>
-    </div>
-
-    <div class="score-card">
-      <span>Soul</span>
-      <strong id="soul-score">0%</strong>
-      <div class="score-bar">
-        <div id="soul-fill" class="score-fill"></div>
-      </div>
-    </div>
-
   </div>
 
-  <div class="content-panel"
-       id="content-panel">
-  </div>
+  <div class="current-quest" id="current-quest"></div>
+
+  <div class="content-panel" id="content-panel"></div>
 
 </div>
 
 <div class="bottom-nav">
-  <button id="nav-character" onclick="showPanel('character')">
+  <button id="nav-character" onclick="showPage('character')">
     <span class="nav-icon">蛇</span>
-    <span>Char</span>
+    <span>Snake</span>
   </button>
 
-  <button id="nav-quests" onclick="showPanel('quests')">
-    <span class="nav-icon">★</span>
-    <span>Quests</span>
-  </button>
-
-  <button id="nav-cooking" onclick="showPanel('cooking')">
+  <button id="nav-cooking" onclick="showPage('cooking')">
     <span class="nav-icon">🍲</span>
     <span>Cook</span>
   </button>
 
-  <button id="nav-fitness" onclick="showPanel('fitness')">
-    <span class="nav-icon">↟</span>
-    <span>Fit</span>
-  </button>
-
-  <button id="nav-strength" onclick="showPanel('strength')">
+  <button id="nav-workout" onclick="showPage('workout')">
     <span class="nav-icon">拳</span>
-    <span>Strong</span>
+    <span>Train</span>
   </button>
 
-  <button id="nav-mind" onclick="showPanel('mind')">
+  <button id="nav-mind" onclick="showPage('mind')">
     <span class="nav-icon">◉</span>
     <span>Mind</span>
   </button>
 
-  <button id="nav-soul" onclick="showPanel('soul')">
+  <button id="nav-soul" onclick="showPage('soul')">
     <span class="nav-icon">⛯</span>
     <span>Soul</span>
   </button>
