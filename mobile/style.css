@@ -138,3 +138,28 @@ body {
 .content-panel strong {
   color: #ffb066;
 }
+
+.log-entry {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #111;
+  border: 1px solid #333;
+}
+
+.log-entry strong,
+.log-entry span,
+.log-entry small {
+  display: block;
+}
+
+.log-entry span {
+  color: #ffb066;
+  font-size: 13px;
+}
+
+.log-entry small {
+  margin-top: 4px;
+  color: #999;
+  font-size: 11px;
+}

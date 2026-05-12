@@ -8,14 +8,16 @@ const defaultState = {
   fitness: 9,
   strength: 6,
   mind: 11,
-  soul: 4
+  soul: 4,
+  log: []
 };
 
 let state = loadState();
 
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
-  return saved ? JSON.parse(saved) : { ...defaultState };
+  const loaded = saved ? JSON.parse(saved) : {};
+  return { ...defaultState, ...loaded, log: loaded.log || [] };
 }
 
 function saveState() {
@@ -45,9 +47,22 @@ function increaseStat(stat, amount) {
   updateScores();
 }
 
+function addLog(label, stat, amount) {
+  const entry = {
+    label,
+    stat,
+    amount,
+    time: new Date().toLocaleString()
+  };
+
+  state.log.unshift(entry);
+  state.log = state.log.slice(0, 10);
+  saveState();
+}
+
 function resetState() {
   localStorage.removeItem(STORAGE_KEY);
-  state = { ...defaultState };
+  state = { ...defaultState, log: [] };
   updateScores();
   renderCharacter();
 }
@@ -60,6 +75,22 @@ function updateScores() {
   document.getElementById("soul-score").innerText = state.soul + "%";
 }
 
+function renderLog() {
+  if (!state.log.length) {
+    return "<p>No actions recorded yet.</p>";
+  }
+
+  return state.log
+    .map(entry => `
+      <div class="log-entry">
+        <strong>${entry.label}</strong>
+        <span>${entry.stat} +${entry.amount}</span>
+        <small>${entry.time}</small>
+      </div>
+    `)
+    .join("");
+}
+
 function renderCharacter() {
   document.getElementById("content-panel").innerHTML = `
     <h3>Character</h3>
@@ -67,13 +98,21 @@ function renderCharacter() {
     <p><strong>XP:</strong> ${state.xp}</p>
     <p><strong>Streak:</strong> ${state.streak}</p>
     <p><strong>Evolution:</strong> ${getEvolutionRank()}</p>
+
+    <h4>Recent Actions</h4>
+    ${renderLog()}
+
     <button class="danger-button" onclick="resetState()">Reset Snake</button>
   `;
 }
 
 function renderRecord(title, body, actions) {
   const buttons = actions
-    .map(action => `<button onclick="completeAction('${action.stat}', ${action.amount}, '${action.panel}')">${action.label}</button>`)
+    .map(action => `
+      <button onclick="completeAction('${action.label}', '${action.stat}', ${action.amount}, '${action.panel}')">
+        ${action.label}
+      </button>
+    `)
     .join("");
 
   document.getElementById("content-panel").innerHTML = `
@@ -83,8 +122,9 @@ function renderRecord(title, body, actions) {
   `;
 }
 
-function completeAction(stat, amount, panel) {
+function completeAction(label, stat, amount, panel) {
   increaseStat(stat, amount);
+  addLog(label, stat, amount);
   showPanel(panel);
 }
 
