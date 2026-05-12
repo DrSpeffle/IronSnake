@@ -118,3 +118,23 @@ body {
   background: #d86b2a;
   color: black;
 }
+
+.content-panel button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #d86b2a;
+  color: #111;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.content-panel button:hover {
+  background: #ffb066;
+}
+
+.content-panel strong {
+  color: #ffb066;
+}
