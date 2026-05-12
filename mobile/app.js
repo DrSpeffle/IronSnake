@@ -99,6 +99,30 @@ function getEvolutionRank() {
   return "Dormant Snake";
 }
 
+function getPortraitPath() {
+
+  const average =
+    (state.nutrition +
+      state.fitness +
+      state.strength +
+      state.mind +
+      state.soul) / 5;
+
+  if (average >= 80) {
+    return "../assets/images/snake_portrait_level_4.png";
+  }
+
+  if (average >= 60) {
+    return "../assets/images/snake_portrait_level_3.png";
+  }
+
+  if (average >= 40) {
+    return "../assets/images/snake_portrait_level_2.png";
+  }
+
+  return "../assets/images/snake_portrait_level_1.png";
+}
+
 function getBadges() {
   return [
     {
@@ -218,7 +242,7 @@ function renderCharacter() {
 
       <img
         class="character-portrait"
-        src="../assets/images/snake_portrait_level_1.png"
+        src="${getPortraitPath()}"
       >
 
       <div class="character-aura"></div>
