@@ -200,3 +200,23 @@ body {
   border-radius: 999px;
   background: linear-gradient(90deg, #d86b2a, #ffb066);
 }
+
+.decay-warning {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #2a1510;
+  border: 1px solid #d86b2a;
+  color: #ffb066;
+  font-size: 13px;
+}
+
+.decay-warning {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #2a1510;
+  border: 1px solid #d86b2a;
+  color: #ffb066;
+  font-size: 13px;
+}
