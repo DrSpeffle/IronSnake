@@ -372,3 +372,38 @@ function showPanel(name) {
 runDailyDecayCheck();
 updateScores();
 showPanel("character");
+
+function createEmbers() {
+
+  const emberContainer =
+    document.getElementById("embers");
+
+  if (!emberContainer) {
+    return;
+  }
+
+  for (let i = 0; i < 24; i++) {
+
+    const ember =
+      document.createElement("div");
+
+    ember.className = "ember";
+
+    ember.style.left =
+      Math.random() * 100 + "%";
+
+    ember.style.animationDuration =
+      (6 + Math.random() * 8) + "s";
+
+    ember.style.animationDelay =
+      Math.random() * 8 + "s";
+
+    ember.style.opacity =
+      0.2 + Math.random() * 0.8;
+
+    emberContainer.appendChild(ember);
+  }
+
+}
+
+createEmbers();

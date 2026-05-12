@@ -336,3 +336,51 @@ body::after {
 
   z-index: -1;
 }
+
+.embers {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.ember {
+  position: absolute;
+  bottom: -20px;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: rgba(255,176,102,0.8);
+
+  animation-name: emberRise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes emberRise {
+
+  from {
+    transform:
+      translateY(0)
+      translateX(0);
+
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  to {
+    transform:
+      translateY(-120vh)
+      translateX(30px);
+
+    opacity: 0;
+  }
+
+}
