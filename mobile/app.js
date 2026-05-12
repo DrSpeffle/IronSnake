@@ -15,12 +15,7 @@ let state = loadState();
 
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
-
-  if (saved) {
-    return JSON.parse(saved);
-  }
-
-  return { ...defaultState };
+  return saved ? JSON.parse(saved) : { ...defaultState };
 }
 
 function saveState() {
@@ -29,44 +24,30 @@ function saveState() {
 
 function getEvolutionRank() {
   const average =
-    (state.nutrition +
-      state.fitness +
-      state.strength +
-      state.mind +
-      state.soul) / 5;
+    (state.nutrition + state.fitness + state.strength + state.mind + state.soul) / 5;
 
   if (average >= 80) return "Iron Serpent";
   if (average >= 60) return "Coiled Fighter";
   if (average >= 40) return "Rising Snake";
   if (average >= 20) return "Awakening Snake";
-
   return "Dormant Snake";
 }
 
 function addXP(amount) {
   state.xp += amount;
   state.level = Math.floor(state.xp / 100) + 1;
-
   saveState();
-  renderCharacter();
 }
 
 function increaseStat(stat, amount) {
-  state[stat] += amount;
-
-  if (state[stat] > 100) {
-    state[stat] = 100;
-  }
-
+  state[stat] = Math.min(100, state[stat] + amount);
   addXP(10);
   updateScores();
-  saveState();
 }
 
 function resetState() {
   localStorage.removeItem(STORAGE_KEY);
   state = { ...defaultState };
-
   updateScores();
   renderCharacter();
 }
@@ -82,52 +63,30 @@ function updateScores() {
 function renderCharacter() {
   document.getElementById("content-panel").innerHTML = `
     <h3>Character</h3>
-
     <p><strong>Level:</strong> ${state.level}</p>
     <p><strong>XP:</strong> ${state.xp}</p>
     <p><strong>Streak:</strong> ${state.streak}</p>
     <p><strong>Evolution:</strong> ${getEvolutionRank()}</p>
-
-    <button onclick="increaseStat('nutrition', 5)">Cook Meal</button>
-    <button onclick="increaseStat('fitness', 5)">Cardio</button>
-    <button onclick="increaseStat('strength', 5)">Lift</button>
-    <button onclick="increaseStat('mind', 5)">Calm</button>
-    <button onclick="increaseStat('soul', 5)">Explore</button>
-
     <button class="danger-button" onclick="resetState()">Reset Snake</button>
   `;
 }
 
-const panels = {
-  character: {
-    render: renderCharacter
-  },
+function renderRecord(title, body, actions) {
+  const buttons = actions
+    .map(action => `<button onclick="completeAction('${action.stat}', ${action.amount}, '${action.panel}')">${action.label}</button>`)
+    .join("");
 
-  cooking: {
-    title: "Cooking Record",
-    body: "Meals, protein, hydration and cooking streaks."
-  },
+  document.getElementById("content-panel").innerHTML = `
+    <h3>${title}</h3>
+    <p>${body}</p>
+    ${buttons}
+  `;
+}
 
-  fitness: {
-    title: "Fitness Record",
-    body: "Walking, conditioning and fitness progression."
-  },
-
-  strength: {
-    title: "Strength Record",
-    body: "Lifts and strength milestones."
-  },
-
-  mind: {
-    title: "Mind",
-    body: "Mindfulness, calm and emotional recovery."
-  },
-
-  soul: {
-    title: "Soul",
-    body: "Motorcycle routes, freedom and exploration."
-  }
-};
+function completeAction(stat, amount, panel) {
+  increaseStat(stat, amount);
+  showPanel(panel);
+}
 
 function showPanel(name) {
   if (name === "character") {
@@ -135,12 +94,65 @@ function showPanel(name) {
     return;
   }
 
-  const panel = panels[name];
+  if (name === "cooking") {
+    renderRecord(
+      "Cooking Record",
+      "Record food discipline, protein, hydration and recovery meals.",
+      [
+        { label: "Protein Meal", stat: "nutrition", amount: 5, panel: "cooking" },
+        { label: "Hydration", stat: "nutrition", amount: 3, panel: "cooking" },
+        { label: "No Junk Meal", stat: "nutrition", amount: 4, panel: "cooking" }
+      ]
+    );
+  }
 
-  document.getElementById("content-panel").innerHTML = `
-    <h3>${panel.title}</h3>
-    <p>${panel.body}</p>
-  `;
+  if (name === "fitness") {
+    renderRecord(
+      "Fitness Record",
+      "Record conditioning, movement, walking and cardio.",
+      [
+        { label: "Walk", stat: "fitness", amount: 4, panel: "fitness" },
+        { label: "Cardio", stat: "fitness", amount: 5, panel: "fitness" },
+        { label: "Mobility", stat: "fitness", amount: 3, panel: "fitness" }
+      ]
+    );
+  }
+
+  if (name === "strength") {
+    renderRecord(
+      "Strength Record",
+      "Record lifting, bodyweight work and progressive overload.",
+      [
+        { label: "Lift Session", stat: "strength", amount: 5, panel: "strength" },
+        { label: "Press Ups", stat: "strength", amount: 3, panel: "strength" },
+        { label: "Core Work", stat: "strength", amount: 3, panel: "strength" }
+      ]
+    );
+  }
+
+  if (name === "mind") {
+    renderRecord(
+      "Mind",
+      "Record calm, mindfulness, control and emotional discipline.",
+      [
+        { label: "Breathing", stat: "mind", amount: 4, panel: "mind" },
+        { label: "Meditation", stat: "mind", amount: 5, panel: "mind" },
+        { label: "Stayed Calm", stat: "mind", amount: 4, panel: "mind" }
+      ]
+    );
+  }
+
+  if (name === "soul") {
+    renderRecord(
+      "Soul",
+      "Record freedom, motorcycle routes, getting out and social recovery.",
+      [
+        { label: "Motorcycle Ride", stat: "soul", amount: 5, panel: "soul" },
+        { label: "Went Outside", stat: "soul", amount: 4, panel: "soul" },
+        { label: "Social Contact", stat: "soul", amount: 4, panel: "soul" }
+      ]
+    );
+  }
 }
 
 updateScores();
