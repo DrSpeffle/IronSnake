@@ -1,0 +1,22 @@
+IronSnake canonical structure.
+
+app/
+Main application runtime.
+
+assets/
+Images, icons, backgrounds, UI visuals.
+
+ui/
+UI layouts and rendering logic.
+
+data/
+Local save state and progression data.
+
+routes/
+Motorcycle routes, exploration maps, GPS overlays.
+
+docs/
+Doctrine, structure, progression logic.
+
+prototypes/
+Experimental builds and test interfaces.
