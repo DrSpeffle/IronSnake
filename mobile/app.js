@@ -12,10 +12,54 @@ const defaultState = {
   strength: 6,
   mind: 11,
   soul: 4,
-  log: []
+  log: [],
+  completedQuests: []
 };
 
 let state = loadState();
+
+const dailyQuests = [
+  {
+    id: "cook_protein",
+    title: "Eat One Proper Protein Meal",
+    stat: "nutrition",
+    label: "Protein Meal",
+    amount: 5,
+    xp: 15
+  },
+  {
+    id: "move_body",
+    title: "Move Your Body",
+    stat: "fitness",
+    label: "Walk",
+    amount: 4,
+    xp: 15
+  },
+  {
+    id: "strength_touch",
+    title: "Do One Strength Action",
+    stat: "strength",
+    label: "Press Ups",
+    amount: 3,
+    xp: 15
+  },
+  {
+    id: "calm_mind",
+    title: "Calm The Mind",
+    stat: "mind",
+    label: "Breathing",
+    amount: 4,
+    xp: 15
+  },
+  {
+    id: "leave_the_cave",
+    title: "Leave The Cave",
+    stat: "soul",
+    label: "Went Outside",
+    amount: 4,
+    xp: 15
+  }
+];
 
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
@@ -30,7 +74,13 @@ function yesterdayKey() {
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   const loaded = saved ? JSON.parse(saved) : {};
-  return { ...defaultState, ...loaded, log: loaded.log || [] };
+
+  return {
+    ...defaultState,
+    ...loaded,
+    log: loaded.log || [],
+    completedQuests: loaded.completedQuests || []
+  };
 }
 
 function saveState() {
@@ -40,9 +90,7 @@ function saveState() {
 function runDailyDecayCheck() {
   const today = todayKey();
 
-  if (state.lastDecayCheck === today) {
-    return;
-  }
+  if (state.lastDecayCheck === today) return;
 
   if (
     state.lastActionDate &&
@@ -70,9 +118,7 @@ function runDailyDecayCheck() {
 function updateStreak() {
   const today = todayKey();
 
-  if (state.lastActionDate === today) {
-    return;
-  }
+  if (state.lastActionDate === today) return;
 
   if (state.lastActionDate === yesterdayKey()) {
     state.streak += 1;
@@ -81,6 +127,29 @@ function updateStreak() {
   }
 
   state.lastActionDate = today;
+}
+
+function getQuestKey(id) {
+  return `${todayKey()}_${id}`;
+}
+
+function isQuestComplete(id) {
+  return state.completedQuests.includes(getQuestKey(id));
+}
+
+function completeQuest(id) {
+  const quest = dailyQuests.find(q => q.id === id);
+
+  if (!quest || isQuestComplete(id)) return;
+
+  increaseStat(quest.stat, quest.amount, quest.xp);
+  addLog(quest.title, quest.stat, quest.amount);
+
+  state.completedQuests.push(getQuestKey(id));
+  state.completedQuests = state.completedQuests.slice(-50);
+
+  saveState();
+  showPanel("quests");
 }
 
 function getEvolutionRank() {
@@ -100,7 +169,6 @@ function getEvolutionRank() {
 }
 
 function getPortraitPath() {
-
   const average =
     (state.nutrition +
       state.fitness +
@@ -108,43 +176,20 @@ function getPortraitPath() {
       state.mind +
       state.soul) / 5;
 
-  if (average >= 80) {
-    return "../assets/images/snake_portrait_level_4.png";
-  }
-
-  if (average >= 60) {
-    return "../assets/images/snake_portrait_level_3.png";
-  }
-
-  if (average >= 40) {
-    return "../assets/images/snake_portrait_level_2.png";
-  }
+  if (average >= 80) return "../assets/images/snake_portrait_level_4.png";
+  if (average >= 60) return "../assets/images/snake_portrait_level_3.png";
+  if (average >= 40) return "../assets/images/snake_portrait_level_2.png";
 
   return "../assets/images/snake_portrait_level_1.png";
 }
 
 function getBadges() {
   return [
-    {
-      label: "First Blood",
-      unlocked: state.log.length >= 1
-    },
-    {
-      label: "Level 2 Fighter",
-      unlocked: state.level >= 2
-    },
-    {
-      label: "Three-Day Coil",
-      unlocked: state.streak >= 3
-    },
-    {
-      label: "Disciplined Eater",
-      unlocked: state.nutrition >= 40
-    },
-    {
-      label: "Road Soul",
-      unlocked: state.soul >= 40
-    }
+    { label: "First Blood", unlocked: state.log.length >= 1 },
+    { label: "Level 2 Fighter", unlocked: state.level >= 2 },
+    { label: "Three-Day Coil", unlocked: state.streak >= 3 },
+    { label: "Disciplined Eater", unlocked: state.nutrition >= 40 },
+    { label: "Road Soul", unlocked: state.soul >= 40 }
   ];
 }
 
@@ -154,12 +199,10 @@ function addXP(amount) {
   saveState();
 }
 
-function increaseStat(stat, amount) {
+function increaseStat(stat, amount, xp = 10) {
   updateStreak();
-
   state[stat] = Math.min(100, state[stat] + amount);
-
-  addXP(10);
+  addXP(xp);
   updateScores();
 }
 
@@ -178,28 +221,23 @@ function addLog(label, stat, amount) {
 
 function resetState() {
   localStorage.removeItem(STORAGE_KEY);
-  state = { ...defaultState, log: [] };
+  state = { ...defaultState, log: [], completedQuests: [] };
 
   updateScores();
-  renderCharacter();
+  showPanel("character");
 }
 
 function updateScores() {
   const stats = ["nutrition", "fitness", "strength", "mind", "soul"];
 
   stats.forEach(stat => {
-    document.getElementById(`${stat}-score`).innerText =
-      state[stat] + "%";
-
-    document.getElementById(`${stat}-fill`).style.width =
-      state[stat] + "%";
+    document.getElementById(`${stat}-score`).innerText = state[stat] + "%";
+    document.getElementById(`${stat}-fill`).style.width = state[stat] + "%";
   });
 }
 
 function renderLog() {
-  if (!state.log.length) {
-    return "<p>No actions recorded yet.</p>";
-  }
+  if (!state.log.length) return "<p>No actions recorded yet.</p>";
 
   return state.log
     .map(entry => `
@@ -223,9 +261,7 @@ function renderBadges() {
 }
 
 function renderDecayNotice() {
-  if (!state.decayNotice) {
-    return "";
-  }
+  if (!state.decayNotice) return "";
 
   return `
     <div class="decay-warning">
@@ -239,14 +275,8 @@ function renderCharacter() {
 
   document.getElementById("content-panel").innerHTML = `
     <div class="character-portrait-wrapper">
-
-      <img
-        class="character-portrait"
-        src="${getPortraitPath()}"
-      >
-
+      <img class="character-portrait" src="${getPortraitPath()}">
       <div class="character-aura"></div>
-
     </div>
 
     <h3>Character</h3>
@@ -264,19 +294,38 @@ function renderCharacter() {
     <p><strong>Evolution:</strong> ${getEvolutionRank()}</p>
 
     <h4>Milestones</h4>
-
-    <div class="badge-grid">
-      ${renderBadges()}
-    </div>
+    <div class="badge-grid">${renderBadges()}</div>
 
     <h4>Recent Actions</h4>
-
     ${renderLog()}
 
-    <button class="danger-button"
-            onclick="resetState()">
-      Reset Snake
-    </button>
+    <button class="danger-button" onclick="resetState()">Reset Snake</button>
+  `;
+}
+
+function renderQuests() {
+  const completed = dailyQuests.filter(q => isQuestComplete(q.id)).length;
+
+  const questCards = dailyQuests
+    .map(quest => {
+      const done = isQuestComplete(quest.id);
+
+      return `
+        <div class="quest-card ${done ? "quest-complete" : ""}">
+          <strong>${done ? "✓" : "○"} ${quest.title}</strong>
+          <span>${quest.stat} +${quest.amount} / XP +${quest.xp}</span>
+          <button ${done ? "disabled" : ""} onclick="completeQuest('${quest.id}')">
+            ${done ? "Completed" : "Complete Quest"}
+          </button>
+        </div>
+      `;
+    })
+    .join("");
+
+  document.getElementById("content-panel").innerHTML = `
+    <h3>Daily Quests</h3>
+    <p><strong>${completed}/${dailyQuests.length}</strong> complete today.</p>
+    ${questCards}
   `;
 }
 
@@ -297,14 +346,11 @@ function renderRecord(title, body, actions) {
 }
 
 function setActiveNav(name) {
-  const navItems = ["character", "cooking", "fitness", "strength", "mind", "soul"];
+  const navItems = ["character", "quests", "cooking", "fitness", "strength", "mind", "soul"];
 
   navItems.forEach(item => {
     const button = document.getElementById(`nav-${item}`);
-
-    if (!button) {
-      return;
-    }
+    if (!button) return;
 
     if (item === name) {
       button.classList.add("active");
@@ -325,6 +371,11 @@ function showPanel(name) {
 
   if (name === "character") {
     renderCharacter();
+    return;
+  }
+
+  if (name === "quests") {
+    renderQuests();
     return;
   }
 
@@ -369,41 +420,25 @@ function showPanel(name) {
   }
 }
 
-runDailyDecayCheck();
-updateScores();
-showPanel("character");
-
 function createEmbers() {
+  const emberContainer = document.getElementById("embers");
 
-  const emberContainer =
-    document.getElementById("embers");
-
-  if (!emberContainer) {
-    return;
-  }
+  if (!emberContainer) return;
 
   for (let i = 0; i < 24; i++) {
-
-    const ember =
-      document.createElement("div");
+    const ember = document.createElement("div");
 
     ember.className = "ember";
-
-    ember.style.left =
-      Math.random() * 100 + "%";
-
-    ember.style.animationDuration =
-      (6 + Math.random() * 8) + "s";
-
-    ember.style.animationDelay =
-      Math.random() * 8 + "s";
-
-    ember.style.opacity =
-      0.2 + Math.random() * 0.8;
+    ember.style.left = Math.random() * 100 + "%";
+    ember.style.animationDuration = (6 + Math.random() * 8) + "s";
+    ember.style.animationDelay = Math.random() * 8 + "s";
+    ember.style.opacity = 0.2 + Math.random() * 0.8;
 
     emberContainer.appendChild(ember);
   }
-
 }
 
+runDailyDecayCheck();
+updateScores();
+showPanel("character");
 createEmbers();
