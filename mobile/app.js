@@ -4,6 +4,7 @@ const defaultState = {
   xp: 0,
   level: 1,
   streak: 0,
+  lastActionDate: null,
   nutrition: 12,
   fitness: 9,
   strength: 6,
@@ -14,6 +15,10 @@ const defaultState = {
 
 let state = loadState();
 
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   const loaded = saved ? JSON.parse(saved) : {};
@@ -22,6 +27,24 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function updateStreak() {
+  const today = todayKey();
+
+  if (state.lastActionDate === today) return;
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = yesterday.toISOString().slice(0, 10);
+
+  if (state.lastActionDate === yesterdayKey) {
+    state.streak += 1;
+  } else {
+    state.streak = 1;
+  }
+
+  state.lastActionDate = today;
 }
 
 function getEvolutionRank() {
@@ -42,6 +65,7 @@ function addXP(amount) {
 }
 
 function increaseStat(stat, amount) {
+  updateStreak();
   state[stat] = Math.min(100, state[stat] + amount);
   addXP(10);
   updateScores();
@@ -96,7 +120,7 @@ function renderCharacter() {
     <h3>Character</h3>
     <p><strong>Level:</strong> ${state.level}</p>
     <p><strong>XP:</strong> ${state.xp}</p>
-    <p><strong>Streak:</strong> ${state.streak}</p>
+    <p><strong>Streak:</strong> ${state.streak} day(s)</p>
     <p><strong>Evolution:</strong> ${getEvolutionRank()}</p>
 
     <h4>Recent Actions</h4>
@@ -135,63 +159,43 @@ function showPanel(name) {
   }
 
   if (name === "cooking") {
-    renderRecord(
-      "Cooking Record",
-      "Record food discipline, protein, hydration and recovery meals.",
-      [
-        { label: "Protein Meal", stat: "nutrition", amount: 5, panel: "cooking" },
-        { label: "Hydration", stat: "nutrition", amount: 3, panel: "cooking" },
-        { label: "No Junk Meal", stat: "nutrition", amount: 4, panel: "cooking" }
-      ]
-    );
+    renderRecord("Cooking Record", "Record food discipline, protein, hydration and recovery meals.", [
+      { label: "Protein Meal", stat: "nutrition", amount: 5, panel: "cooking" },
+      { label: "Hydration", stat: "nutrition", amount: 3, panel: "cooking" },
+      { label: "No Junk Meal", stat: "nutrition", amount: 4, panel: "cooking" }
+    ]);
   }
 
   if (name === "fitness") {
-    renderRecord(
-      "Fitness Record",
-      "Record conditioning, movement, walking and cardio.",
-      [
-        { label: "Walk", stat: "fitness", amount: 4, panel: "fitness" },
-        { label: "Cardio", stat: "fitness", amount: 5, panel: "fitness" },
-        { label: "Mobility", stat: "fitness", amount: 3, panel: "fitness" }
-      ]
-    );
+    renderRecord("Fitness Record", "Record conditioning, movement, walking and cardio.", [
+      { label: "Walk", stat: "fitness", amount: 4, panel: "fitness" },
+      { label: "Cardio", stat: "fitness", amount: 5, panel: "fitness" },
+      { label: "Mobility", stat: "fitness", amount: 3, panel: "fitness" }
+    ]);
   }
 
   if (name === "strength") {
-    renderRecord(
-      "Strength Record",
-      "Record lifting, bodyweight work and progressive overload.",
-      [
-        { label: "Lift Session", stat: "strength", amount: 5, panel: "strength" },
-        { label: "Press Ups", stat: "strength", amount: 3, panel: "strength" },
-        { label: "Core Work", stat: "strength", amount: 3, panel: "strength" }
-      ]
-    );
+    renderRecord("Strength Record", "Record lifting, bodyweight work and progressive overload.", [
+      { label: "Lift Session", stat: "strength", amount: 5, panel: "strength" },
+      { label: "Press Ups", stat: "strength", amount: 3, panel: "strength" },
+      { label: "Core Work", stat: "strength", amount: 3, panel: "strength" }
+    ]);
   }
 
   if (name === "mind") {
-    renderRecord(
-      "Mind",
-      "Record calm, mindfulness, control and emotional discipline.",
-      [
-        { label: "Breathing", stat: "mind", amount: 4, panel: "mind" },
-        { label: "Meditation", stat: "mind", amount: 5, panel: "mind" },
-        { label: "Stayed Calm", stat: "mind", amount: 4, panel: "mind" }
-      ]
-    );
+    renderRecord("Mind", "Record calm, mindfulness, control and emotional discipline.", [
+      { label: "Breathing", stat: "mind", amount: 4, panel: "mind" },
+      { label: "Meditation", stat: "mind", amount: 5, panel: "mind" },
+      { label: "Stayed Calm", stat: "mind", amount: 4, panel: "mind" }
+    ]);
   }
 
   if (name === "soul") {
-    renderRecord(
-      "Soul",
-      "Record freedom, motorcycle routes, getting out and social recovery.",
-      [
-        { label: "Motorcycle Ride", stat: "soul", amount: 5, panel: "soul" },
-        { label: "Went Outside", stat: "soul", amount: 4, panel: "soul" },
-        { label: "Social Contact", stat: "soul", amount: 4, panel: "soul" }
-      ]
-    );
+    renderRecord("Soul", "Record freedom, motorcycle routes, getting out and social recovery.", [
+      { label: "Motorcycle Ride", stat: "soul", amount: 5, panel: "soul" },
+      { label: "Went Outside", stat: "soul", amount: 4, panel: "soul" },
+      { label: "Social Contact", stat: "soul", amount: 4, panel: "soul" }
+    ]);
   }
 }
 
