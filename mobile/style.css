@@ -226,3 +226,23 @@ body {
   color: #111;
   font-weight: bold;
 }
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.badge {
+  padding: 10px;
+  border-radius: 10px;
+  background: #111;
+  border: 1px solid #333;
+  color: #aaa;
+}
+
+.badge.unlocked {
+  border-color: #d86b2a;
+  color: #ffb066;
+}

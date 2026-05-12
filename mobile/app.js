@@ -5,6 +5,8 @@ const defaultState = {
   level: 1,
   streak: 0,
   lastActionDate: null,
+  lastDecayCheck: null,
+  decayNotice: "",
   nutrition: 12,
   fitness: 9,
   strength: 6,
@@ -19,6 +21,12 @@ function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function yesterdayKey() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday.toISOString().slice(0, 10);
+}
+
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   const loaded = saved ? JSON.parse(saved) : {};
@@ -29,16 +37,44 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function runDailyDecayCheck() {
+  const today = todayKey();
+
+  if (state.lastDecayCheck === today) {
+    return;
+  }
+
+  if (
+    state.lastActionDate &&
+    state.lastActionDate !== today &&
+    state.lastActionDate !== yesterdayKey()
+  ) {
+    state.streak = 0;
+
+    state.nutrition = Math.max(0, state.nutrition - 2);
+    state.fitness = Math.max(0, state.fitness - 2);
+    state.strength = Math.max(0, state.strength - 2);
+    state.mind = Math.max(0, state.mind - 2);
+    state.soul = Math.max(0, state.soul - 2);
+
+    state.decayNotice =
+      "Decay triggered: no recorded action yesterday. Scores reduced.";
+  } else {
+    state.decayNotice = "";
+  }
+
+  state.lastDecayCheck = today;
+  saveState();
+}
+
 function updateStreak() {
   const today = todayKey();
 
-  if (state.lastActionDate === today) return;
+  if (state.lastActionDate === today) {
+    return;
+  }
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayKey = yesterday.toISOString().slice(0, 10);
-
-  if (state.lastActionDate === yesterdayKey) {
+  if (state.lastActionDate === yesterdayKey()) {
     state.streak += 1;
   } else {
     state.streak = 1;
@@ -49,13 +85,43 @@ function updateStreak() {
 
 function getEvolutionRank() {
   const average =
-    (state.nutrition + state.fitness + state.strength + state.mind + state.soul) / 5;
+    (state.nutrition +
+      state.fitness +
+      state.strength +
+      state.mind +
+      state.soul) / 5;
 
   if (average >= 80) return "Iron Serpent";
   if (average >= 60) return "Coiled Fighter";
   if (average >= 40) return "Rising Snake";
   if (average >= 20) return "Awakening Snake";
+
   return "Dormant Snake";
+}
+
+function getBadges() {
+  return [
+    {
+      label: "First Blood",
+      unlocked: state.log.length >= 1
+    },
+    {
+      label: "Level 2 Fighter",
+      unlocked: state.level >= 2
+    },
+    {
+      label: "Three-Day Coil",
+      unlocked: state.streak >= 3
+    },
+    {
+      label: "Disciplined Eater",
+      unlocked: state.nutrition >= 40
+    },
+    {
+      label: "Road Soul",
+      unlocked: state.soul >= 40
+    }
+  ];
 }
 
 function addXP(amount) {
@@ -66,7 +132,9 @@ function addXP(amount) {
 
 function increaseStat(stat, amount) {
   updateStreak();
+
   state[stat] = Math.min(100, state[stat] + amount);
+
   addXP(10);
   updateScores();
 }
@@ -87,6 +155,7 @@ function addLog(label, stat, amount) {
 function resetState() {
   localStorage.removeItem(STORAGE_KEY);
   state = { ...defaultState, log: [] };
+
   updateScores();
   renderCharacter();
 }
@@ -95,8 +164,11 @@ function updateScores() {
   const stats = ["nutrition", "fitness", "strength", "mind", "soul"];
 
   stats.forEach(stat => {
-    document.getElementById(`${stat}-score`).innerText = state[stat] + "%";
-    document.getElementById(`${stat}-fill`).style.width = state[stat] + "%";
+    document.getElementById(`${stat}-score`).innerText =
+      state[stat] + "%";
+
+    document.getElementById(`${stat}-fill`).style.width =
+      state[stat] + "%";
   });
 }
 
@@ -116,13 +188,50 @@ function renderLog() {
     .join("");
 }
 
+function renderBadges() {
+  return getBadges()
+    .map(badge => `
+      <div class="badge ${badge.unlocked ? "unlocked" : ""}">
+        ${badge.unlocked ? "✓" : "○"} ${badge.label}
+      </div>
+    `)
+    .join("");
+}
+
+function renderDecayNotice() {
+  if (!state.decayNotice) {
+    return "";
+  }
+
+  return `
+    <div class="decay-warning">
+      ${state.decayNotice}
+    </div>
+  `;
+}
+
 function renderCharacter() {
+  const xpIntoLevel = state.xp % 100;
+
   document.getElementById("content-panel").innerHTML = `
     <h3>Character</h3>
+
+    ${renderDecayNotice()}
+
     <p><strong>Level:</strong> ${state.level}</p>
     <p><strong>XP:</strong> ${state.xp}</p>
+
+    <div class="xp-bar">
+      <div class="xp-fill" style="width: ${xpIntoLevel}%"></div>
+    </div>
+
     <p><strong>Streak:</strong> ${state.streak} day(s)</p>
     <p><strong>Evolution:</strong> ${getEvolutionRank()}</p>
+
+    <h4>Milestones</h4>
+    <div class="badge-grid">
+      ${renderBadges()}
+    </div>
 
     <h4>Recent Actions</h4>
     ${renderLog()}
@@ -220,5 +329,6 @@ function showPanel(name) {
   }
 }
 
+runDailyDecayCheck();
 updateScores();
-renderCharacter();
+showPanel("character");
