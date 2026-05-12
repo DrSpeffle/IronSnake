@@ -431,3 +431,32 @@ body::after {
   background: #333;
   color: #888;
 }
+
+.dialogue-box {
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(42,21,16,0.9);
+  border: 1px solid #d86b2a;
+  color: #ffb066;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.save-box {
+  width: 100%;
+  min-height: 220px;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: #111;
+  border: 1px solid #d86b2a;
+  color: #ffb066;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.quest-complete {
+  border-color: #d86b2a;
+  box-shadow: 0 0 18px rgba(216,107,42,0.18);
+}
