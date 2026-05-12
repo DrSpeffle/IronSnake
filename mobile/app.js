@@ -147,6 +147,24 @@ function renderRecord(title, body, actions) {
   `;
 }
 
+function setActiveNav(name) {
+  const navItems = ["character", "cooking", "fitness", "strength", "mind", "soul"];
+
+  navItems.forEach(item => {
+    const button = document.getElementById(`nav-${item}`);
+
+    if (!button) {
+      return;
+    }
+
+    if (item === name) {
+      button.classList.add("active");
+    } else {
+      button.classList.remove("active");
+    }
+  });
+}
+
 function completeAction(label, stat, amount, panel) {
   increaseStat(stat, amount);
   addLog(label, stat, amount);
@@ -154,6 +172,8 @@ function completeAction(label, stat, amount, panel) {
 }
 
 function showPanel(name) {
+  setActiveNav(name);
+
   if (name === "character") {
     renderCharacter();
     return;
