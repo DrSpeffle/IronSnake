@@ -214,6 +214,17 @@ function renderCharacter() {
   const xpIntoLevel = state.xp % 100;
 
   document.getElementById("content-panel").innerHTML = `
+    <div class="character-portrait-wrapper">
+
+      <img
+        class="character-portrait"
+        src="../assets/images/snake_portrait_level_1.png"
+      >
+
+      <div class="character-aura"></div>
+
+    </div>
+
     <h3>Character</h3>
 
     ${renderDecayNotice()}
@@ -229,14 +240,19 @@ function renderCharacter() {
     <p><strong>Evolution:</strong> ${getEvolutionRank()}</p>
 
     <h4>Milestones</h4>
+
     <div class="badge-grid">
       ${renderBadges()}
     </div>
 
     <h4>Recent Actions</h4>
+
     ${renderLog()}
 
-    <button class="danger-button" onclick="resetState()">Reset Snake</button>
+    <button class="danger-button"
+            onclick="resetState()">
+      Reset Snake
+    </button>
   `;
 }
 

@@ -246,3 +246,46 @@ body {
   border-color: #d86b2a;
   color: #ffb066;
 }
+
+.character-portrait-wrapper {
+  position: relative;
+  margin-bottom: 18px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid #d86b2a;
+  background: #111;
+}
+
+.character-portrait {
+  width: 100%;
+  display: block;
+}
+
+.character-aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle,
+    rgba(255,176,102,0.18) 0%,
+    rgba(0,0,0,0) 70%);
+
+  animation: pulseAura 3s infinite;
+}
+
+@keyframes pulseAura {
+
+  0% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0.35;
+  }
+
+}
