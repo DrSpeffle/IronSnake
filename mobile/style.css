@@ -543,3 +543,12 @@ body::after {
 .bottom-nav {
   grid-template-columns: repeat(5, 1fr);
 }
+
+.current-quest em {
+  display: block;
+  margin-top: 4px;
+  color: #999;
+  font-style: normal;
+  font-size: 12px;
+  text-transform: uppercase;
+}

@@ -19,14 +19,15 @@ let state = loadState();
 const dayPlans = [
   {
     day: 1,
+    week: "Week 1 — Wake The Snake",
     quest: "Swap the usual bacon sandwich for a better lunch.",
     cookingTitle: "Better Sandwich Day",
     cookingSteps: [
-      "Buy wholemeal bread or a decent roll.",
-      "Add chicken, tuna, eggs, or ham.",
-      "Add salad, tomato, cucumber, or peppers.",
+      "Use wholemeal bread or a decent roll.",
+      "Add chicken, tuna, eggs, ham, or cheese.",
+      "Add one salad item: tomato, cucumber, lettuce, or peppers.",
       "Drink water with it.",
-      "Do not aim for perfect. Aim for better."
+      "This is not a diet. This is the first upgrade."
     ],
     workoutTitle: "Wake The Body",
     workoutSteps: [
@@ -34,19 +35,20 @@ const dayPlans = [
       "Do 5 slow squats.",
       "Do 5 wall press-ups.",
       "Stretch shoulders for 1 minute.",
-      "Stop before it feels stupidly hard."
+      "Stop before it feels too hard."
     ]
   },
   {
     day: 2,
-    quest: "Cook or prepare one simple protein meal.",
+    week: "Week 1 — Wake The Snake",
+    quest: "Prepare one simple protein meal.",
     cookingTitle: "Eggs Or Chicken Plate",
     cookingSteps: [
-      "Choose eggs, chicken, or tuna.",
-      "Add potatoes, rice, or bread.",
+      "Choose eggs, chicken, tuna, or ham.",
+      "Add potatoes, rice, pasta, or bread.",
       "Add one vegetable.",
       "Season with salt, pepper, garlic, or paprika.",
-      "Eat slowly and notice it counts."
+      "Eat slowly. This counts."
     ],
     workoutTitle: "Foundation Set",
     workoutSteps: [
@@ -59,13 +61,14 @@ const dayPlans = [
   },
   {
     day: 3,
-    quest: "Catalunyan casserole attempt.",
+    week: "Week 1 — Wake The Snake",
+    quest: "Cook Catalunyan casserole.",
     cookingTitle: "Catalunyan Casserole",
     cookingSteps: [
       "Boil chopped potatoes until soft.",
       "Fry onion, garlic, chorizo, and pork belly.",
-      "Add capsicum/pepper, green beans, and broccoli.",
-      "Mix potatoes into the pan.",
+      "Add peppers, green beans, and broccoli.",
+      "Mix the potatoes into the pan.",
       "Season and simmer until rich.",
       "Make enough for leftovers."
     ],
@@ -80,14 +83,15 @@ const dayPlans = [
   },
   {
     day: 4,
-    quest: "Repeat one good meal and one simple training action.",
+    week: "Week 1 — Wake The Snake",
+    quest: "Repeat one successful meal and one simple training action.",
     cookingTitle: "Repeat To Win",
     cookingSteps: [
       "Choose the easiest successful meal so far.",
       "Cook it again.",
       "Add one extra vegetable.",
       "Drink water.",
-      "Do not chase novelty. Build rhythm."
+      "Rhythm beats novelty."
     ],
     workoutTitle: "Controlled Repeat",
     workoutSteps: [
@@ -95,18 +99,19 @@ const dayPlans = [
       "Repeat yesterday, but cleaner.",
       "Move slower.",
       "Rest longer if needed.",
-      "Finish feeling proud, not broken."
+      "Finish proud, not broken."
     ]
   },
   {
     day: 5,
-    quest: "Prepare creamy chicken or a simple protein dinner.",
+    week: "Week 1 — Wake The Snake",
+    quest: "Cook creamy chicken or a simple protein dinner.",
     cookingTitle: "Creamy Chicken",
     cookingSteps: [
       "Fry onion and garlic.",
       "Add chopped chicken.",
       "Add mushrooms or peppers if available.",
-      "Add small amount of cream or soft cheese.",
+      "Add a small amount of cream, yoghurt, or soft cheese.",
       "Serve with potatoes, rice, or pasta.",
       "Keep the portion sensible."
     ],
@@ -116,11 +121,12 @@ const dayPlans = [
       "Do 3 rounds of squats.",
       "Do 3 rounds of press-ups.",
       "Do 3 rounds of core.",
-      "Stop with one rep still in reserve."
+      "Stop with one rep in reserve."
     ]
   },
   {
     day: 6,
+    week: "Week 1 — Wake The Snake",
     quest: "Get outside and reinforce the system.",
     cookingTitle: "Simple Recovery Food",
     cookingSteps: [
@@ -141,6 +147,7 @@ const dayPlans = [
   },
   {
     day: 7,
+    week: "Week 1 — Wake The Snake",
     quest: "Review the week and complete one pride action.",
     cookingTitle: "Week Review Meal",
     cookingSteps: [
@@ -157,6 +164,449 @@ const dayPlans = [
       "Do max comfortable press-ups variation.",
       "Do a plank.",
       "Record honestly. No ego."
+    ]
+  },
+  {
+    day: 8,
+    week: "Week 2 — Build The Coil",
+    quest: "Add breakfast or an earlier protein start.",
+    cookingTitle: "Small Breakfast Upgrade",
+    cookingSteps: [
+      "Choose one: yoghurt, eggs, banana, porridge, or protein sandwich.",
+      "Keep it small.",
+      "Eat before the usual late-morning hunger crash.",
+      "Drink water.",
+      "Do not force a full breakfast yet."
+    ],
+    workoutTitle: "Coil Builder",
+    workoutSteps: [
+      "Walk 20 minutes.",
+      "Do 3 rounds of 8 squats.",
+      "Do 3 rounds of 8 wall or bench press-ups.",
+      "Do 3 rounds of 15 second plank.",
+      "Stretch for 3 minutes."
+    ]
+  },
+  {
+    day: 9,
+    week: "Week 2 — Build The Coil",
+    quest: "Cook a clean protein and carb plate.",
+    cookingTitle: "Chicken, Rice, Vegetable",
+    cookingSteps: [
+      "Cook rice or potatoes.",
+      "Cook chicken with garlic and paprika.",
+      "Add broccoli, peppers, or green beans.",
+      "Add a small sauce if needed.",
+      "Make one spare portion."
+    ],
+    workoutTitle: "More Reps, Same Control",
+    workoutSteps: [
+      "Walk 20 minutes.",
+      "Do 3 rounds of 10 squats.",
+      "Do 3 rounds of 8 press-ups variation.",
+      "Do 3 rounds of core.",
+      "Keep technique clean."
+    ]
+  },
+  {
+    day: 10,
+    week: "Week 2 — Build The Coil",
+    quest: "Cook salmon or fish.",
+    cookingTitle: "Salmon Plate",
+    cookingSteps: [
+      "Cook salmon, cod, tuna steak, or fish fingers if needed.",
+      "Add potatoes, rice, or bread.",
+      "Add peas, broccoli, or salad.",
+      "Use lemon, pepper, garlic, or paprika.",
+      "Simple food. Strong food."
+    ],
+    workoutTitle: "Conditioning Touch",
+    workoutSteps: [
+      "Walk 10 minutes.",
+      "Do 5 rounds: 5 squats, 5 press-ups, 10 second plank.",
+      "Rest as needed.",
+      "Do not rush.",
+      "Finish with water."
+    ]
+  },
+  {
+    day: 11,
+    week: "Week 2 — Build The Coil",
+    quest: "Repeat the strongest meal so far.",
+    cookingTitle: "Repeat Strongest Meal",
+    cookingSteps: [
+      "Pick Catalunyan casserole, creamy chicken, or salmon plate.",
+      "Cook it again.",
+      "Improve one thing only.",
+      "Do not overcomplicate it.",
+      "Repeatability is the win."
+    ],
+    workoutTitle: "Joint-Friendly Day",
+    workoutSteps: [
+      "Walk 20 minutes.",
+      "Do gentle mobility.",
+      "Do light squats only.",
+      "Do breathing afterwards.",
+      "Recover without quitting."
+    ]
+  },
+  {
+    day: 12,
+    week: "Week 2 — Build The Coil",
+    quest: "Cook a proper lunch instead of buying rubbish.",
+    cookingTitle: "Lunch Control",
+    cookingSteps: [
+      "Make a proper sandwich, wrap, or leftovers box.",
+      "Include protein.",
+      "Include one vegetable or salad item.",
+      "Take water.",
+      "This replaces drift."
+    ],
+    workoutTitle: "Strength Builder",
+    workoutSteps: [
+      "Walk 15 minutes.",
+      "Do 4 rounds of 8 squats.",
+      "Do 4 rounds of 8 press-ups variation.",
+      "Do 4 rounds of 15 second plank.",
+      "Stretch."
+    ]
+  },
+  {
+    day: 13,
+    week: "Week 2 — Build The Coil",
+    quest: "Get outside for body and soul.",
+    cookingTitle: "Outdoor Day Food",
+    cookingSteps: [
+      "Eat before going out.",
+      "Choose a sandwich, eggs, leftovers, or chicken plate.",
+      "Avoid skipping food then crashing later.",
+      "Drink water.",
+      "Keep the engine fuelled."
+    ],
+    workoutTitle: "Outside Session",
+    workoutSteps: [
+      "Walk 25 minutes.",
+      "Find stairs or a hill if possible.",
+      "Do not sprint.",
+      "Keep breathing under control.",
+      "Finish calmer than you started."
+    ]
+  },
+  {
+    day: 14,
+    week: "Week 2 — Build The Coil",
+    quest: "Week 2 review.",
+    cookingTitle: "Week Two Review Meal",
+    cookingSteps: [
+      "Choose the meal Snake enjoyed most.",
+      "Cook it again.",
+      "Write down the easiest repeatable version.",
+      "Plan two repeats for next week.",
+      "Food discipline is now forming."
+    ],
+    workoutTitle: "Week Two Test",
+    workoutSteps: [
+      "Walk 25 minutes.",
+      "Do max comfortable squats.",
+      "Do max comfortable press-ups variation.",
+      "Do max comfortable plank.",
+      "Compare to Day 7."
+    ]
+  },
+  {
+    day: 15,
+    week: "Week 3 — Strike With Structure",
+    quest: "Start the day with planned food.",
+    cookingTitle: "Planned Start",
+    cookingSteps: [
+      "Decide today’s main meal early.",
+      "Prepare one ingredient in advance.",
+      "Do not wait until hungry to decide.",
+      "Keep protein central.",
+      "Structure beats impulse."
+    ],
+    workoutTitle: "Structured Session",
+    workoutSteps: [
+      "Walk 25 minutes.",
+      "Do 4 rounds of 10 squats.",
+      "Do 4 rounds of 10 press-ups variation.",
+      "Do 4 rounds of 20 second plank.",
+      "Rest properly."
+    ]
+  },
+  {
+    day: 16,
+    week: "Week 3 — Strike With Structure",
+    quest: "Cook a batch meal.",
+    cookingTitle: "Batch Cook",
+    cookingSteps: [
+      "Choose casserole, chilli, curry, or chicken rice.",
+      "Cook enough for 2 portions.",
+      "Store one portion.",
+      "Label it if needed.",
+      "Future Snake gets fed."
+    ],
+    workoutTitle: "Strength Progression",
+    workoutSteps: [
+      "Walk 15 minutes.",
+      "Add one harder variation if safe.",
+      "More range, slower reps, or lower press-up angle.",
+      "Do not add everything at once.",
+      "Progress is controlled pressure."
+    ]
+  },
+  {
+    day: 17,
+    week: "Week 3 — Strike With Structure",
+    quest: "Eat leftovers instead of drifting.",
+    cookingTitle: "Leftover Discipline",
+    cookingSteps: [
+      "Use yesterday’s stored portion.",
+      "Add salad, veg, or bread if needed.",
+      "Drink water.",
+      "Notice the reduced effort.",
+      "This is why batch cooking matters."
+    ],
+    workoutTitle: "Recovery Strength",
+    workoutSteps: [
+      "Walk 20 minutes.",
+      "Do mobility.",
+      "Do light core.",
+      "No ego today.",
+      "Keep the streak alive."
+    ]
+  },
+  {
+    day: 18,
+    week: "Week 3 — Strike With Structure",
+    quest: "Cook a meal with vegetables built in.",
+    cookingTitle: "Vegetable Built-In Meal",
+    cookingSteps: [
+      "Choose chicken, pork, tuna, or eggs.",
+      "Add at least two vegetables.",
+      "Cook them into the meal, not as punishment.",
+      "Season properly.",
+      "Make it taste good."
+    ],
+    workoutTitle: "Conditioning Builder",
+    workoutSteps: [
+      "Walk 10 minutes.",
+      "Do 6 rounds of 5 squats, 5 press-ups, 15 second plank.",
+      "Rest 60 seconds between rounds.",
+      "Keep breathing steady.",
+      "Finish clean."
+    ]
+  },
+  {
+    day: 19,
+    week: "Week 3 — Strike With Structure",
+    quest: "Prepare a no-excuse lunch.",
+    cookingTitle: "No-Excuse Lunch",
+    cookingSteps: [
+      "Make lunch before hunger hits.",
+      "Protein first.",
+      "Carb second.",
+      "Vegetable or salad third.",
+      "Take it with you if needed."
+    ],
+    workoutTitle: "Walk And Reset",
+    workoutSteps: [
+      "Walk 30 minutes.",
+      "No workout pressure.",
+      "Use the walk to clear the head.",
+      "Breathe through the nose if possible.",
+      "Return steadier."
+    ]
+  },
+  {
+    day: 20,
+    week: "Week 3 — Strike With Structure",
+    quest: "Cook something better than takeaway.",
+    cookingTitle: "Better Than Takeaway",
+    cookingSteps: [
+      "Choose a favourite flavour: spicy, creamy, smoky, or garlicky.",
+      "Build it around protein.",
+      "Add potato, rice, pasta, or bread.",
+      "Add vegetables.",
+      "Make the better choice satisfying."
+    ],
+    workoutTitle: "Pressure Session",
+    workoutSteps: [
+      "Walk 15 minutes.",
+      "Do 5 rounds of 10 squats.",
+      "Do 5 rounds of 8-10 press-ups.",
+      "Do 5 rounds of 20 second plank.",
+      "Stop if form collapses."
+    ]
+  },
+  {
+    day: 21,
+    week: "Week 3 — Strike With Structure",
+    quest: "Week 3 review.",
+    cookingTitle: "Structure Review",
+    cookingSteps: [
+      "List the top three repeat meals.",
+      "Pick one batch meal.",
+      "Pick one quick lunch.",
+      "Pick one comfort meal that is still decent.",
+      "This becomes the base library."
+    ],
+    workoutTitle: "Week Three Test",
+    workoutSteps: [
+      "Walk 30 minutes.",
+      "Test squats.",
+      "Test press-ups variation.",
+      "Test plank.",
+      "Compare to Day 14."
+    ]
+  },
+  {
+    day: 22,
+    week: "Week 4 — Pride Phase",
+    quest: "Choose deliberately all day.",
+    cookingTitle: "Deliberate Food Day",
+    cookingSteps: [
+      "Plan lunch and dinner.",
+      "No accidental food.",
+      "Protein in both meals.",
+      "Water through the day.",
+      "This is command, not restriction."
+    ],
+    workoutTitle: "Pride Session",
+    workoutSteps: [
+      "Walk 30 minutes.",
+      "Do 5 rounds of squats.",
+      "Do 5 rounds of press-ups.",
+      "Do 5 rounds of core.",
+      "Finish with posture tall."
+    ]
+  },
+  {
+    day: 23,
+    week: "Week 4 — Pride Phase",
+    quest: "Cook for tomorrow as well as today.",
+    cookingTitle: "Future-Proof Meal",
+    cookingSteps: [
+      "Cook two portions.",
+      "Eat one.",
+      "Store one.",
+      "Use enough protein.",
+      "Future Snake does not beg."
+    ],
+    workoutTitle: "Controlled Harder Day",
+    workoutSteps: [
+      "Walk 20 minutes.",
+      "Add one harder movement only.",
+      "Keep everything else steady.",
+      "No reckless jumps.",
+      "Earn the upgrade."
+    ]
+  },
+  {
+    day: 24,
+    week: "Week 4 — Pride Phase",
+    quest: "Use yesterday’s food and train clean.",
+    cookingTitle: "Stored Meal Win",
+    cookingSteps: [
+      "Use the stored portion.",
+      "Add something fresh if needed.",
+      "Drink water.",
+      "Notice the system working.",
+      "This is discipline paying interest."
+    ],
+    workoutTitle: "Clean Technique",
+    workoutSteps: [
+      "Walk 20 minutes.",
+      "Slow every rep down.",
+      "Stop rushing.",
+      "Make each movement clean.",
+      "Quality is strength."
+    ]
+  },
+  {
+    day: 25,
+    week: "Week 4 — Pride Phase",
+    quest: "Cook a confident meal without instructions.",
+    cookingTitle: "No-Instruction Meal",
+    cookingSteps: [
+      "Choose protein.",
+      "Choose carb.",
+      "Choose vegetables.",
+      "Choose flavour.",
+      "Cook from memory.",
+      "You are learning."
+    ],
+    workoutTitle: "Confidence Session",
+    workoutSteps: [
+      "Choose your best current workout.",
+      "Repeat it.",
+      "Improve one thing.",
+      "Do not chase punishment.",
+      "Chase command."
+    ]
+  },
+  {
+    day: 26,
+    week: "Week 4 — Pride Phase",
+    quest: "Get out into the world.",
+    cookingTitle: "Fuel Before Freedom",
+    cookingSteps: [
+      "Eat before going out.",
+      "Avoid running on fumes.",
+      "Take water.",
+      "If riding, do not skip food.",
+      "Soul needs fuel too."
+    ],
+    workoutTitle: "Road Body",
+    workoutSteps: [
+      "Walk or ride out.",
+      "Spend time away from the house.",
+      "Stretch after.",
+      "Notice mood change.",
+      "The world is part of training."
+    ]
+  },
+  {
+    day: 27,
+    week: "Week 4 — Pride Phase",
+    quest: "Prepare Snake’s repeatable weekly system.",
+    cookingTitle: "Build The Food System",
+    cookingSteps: [
+      "Pick 3 repeat meals.",
+      "Pick 2 quick lunches.",
+      "Pick 1 comfort meal.",
+      "Pick 1 batch meal.",
+      "This becomes the next month."
+    ],
+    workoutTitle: "Build The Training System",
+    workoutSteps: [
+      "Pick 2 strength days.",
+      "Pick 2 walking days.",
+      "Pick 1 recovery day.",
+      "Pick 1 outside/soul day.",
+      "Make it realistic."
+    ]
+  },
+  {
+    day: 28,
+    week: "Week 4 — Pride Phase",
+    quest: "Complete the first IronSnake cycle.",
+    cookingTitle: "Cycle Completion Meal",
+    cookingSteps: [
+      "Cook the best meal from the month.",
+      "Make it properly.",
+      "Eat with pride.",
+      "Write down what changed.",
+      "This is not the end. It is the first coil."
+    ],
+    workoutTitle: "Cycle Test",
+    workoutSteps: [
+      "Walk 30 minutes.",
+      "Test squats.",
+      "Test press-ups variation.",
+      "Test plank.",
+      "Compare honestly to Day 1.",
+      "High four."
     ]
   }
 ];
@@ -189,7 +639,8 @@ function updateHeader() {
   const plan = getTodayPlan();
 
   document.getElementById("current-quest").innerHTML = `
-    <strong>Day ${state.currentDay} Quest</strong>
+    <strong>${plan.week}</strong>
+    <em>Day ${state.currentDay} Quest</em>
     <span>${state.completedToday ? "✓ Done" : plan.quest}</span>
     ${
       state.completedToday
@@ -298,6 +749,7 @@ function renderCooking() {
 
   document.getElementById("content-panel").innerHTML = `
     <h3>${plan.cookingTitle}</h3>
+    <p><strong>${plan.week}</strong></p>
     <p>Day ${state.currentDay} cooking instruction.</p>
     <ol class="instruction-list">
       ${plan.cookingSteps.map(step => `<li>${step}</li>`).join("")}
@@ -310,6 +762,7 @@ function renderWorkout() {
 
   document.getElementById("content-panel").innerHTML = `
     <h3>${plan.workoutTitle}</h3>
+    <p><strong>${plan.week}</strong></p>
     <p>Day ${state.currentDay} training instruction.</p>
     <ol class="instruction-list">
       ${plan.workoutSteps.map(step => `<li>${step}</li>`).join("")}
