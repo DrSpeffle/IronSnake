@@ -10,7 +10,7 @@ const defaultState = {
   fitness: 9,
   strength: 6,
   mind: 11,
-  soul: 4,
+  sleep: 7,
 
   weight: "",
   mobility: 8,
@@ -20,6 +20,44 @@ const defaultState = {
   dailyRecords: [],
   log: []
 };
+
+const sleepLibrary = [
+  {
+    title: "Wind Down Protocol",
+    description:
+      "No bright screens 30 minutes before sleep. Dim lights. Slow breathing."
+  },
+
+  {
+    title: "Cold Dark Room",
+    description:
+      "Cool room, darkness, quiet environment, no overstimulation."
+  },
+
+  {
+    title: "No Chaos Before Bed",
+    description:
+      "Avoid arguments, doomscrolling, or stress loops before sleeping."
+  },
+
+  {
+    title: "Hydrate Early",
+    description:
+      "Drink enough water through the day so you are not dehydrated at night."
+  },
+
+  {
+    title: "Consistent Sleep Time",
+    description:
+      "Going to sleep at roughly the same time matters more than perfection."
+  },
+
+  {
+    title: "Recovery Mindset",
+    description:
+      "Sleep is not weakness. It is biological reconstruction."
+  }
+];
 
 const recipes = [
   {
@@ -155,18 +193,6 @@ const workoutLibrary = [
       "Steady breathing",
       "Recovery stretch"
     ]
-  },
-
-  {
-    title: "Pressure Session",
-    focus: "Mental resilience",
-    steps: [
-      "5 rounds",
-      "10 squats",
-      "8 press-ups",
-      "20 second plank",
-      "Rest with control"
-    ]
   }
 ];
 
@@ -196,62 +222,9 @@ const mindLibrary = [
   },
 
   {
-    title: "Sleep Wind Down",
-    description:
-      "No bright screens. Dark room. Slow breathing. Calm music."
-  },
-
-  {
     title: "Confidence Reminder",
     description:
-      "You are not trying to become perfect. You are becoming dangerous to your old self."
-  }
-];
-
-const soulLibrary = [
-  {
-    title: "Short Motorcycle Route",
-    description:
-      "Take a short ride with no destination pressure. Just movement."
-  },
-
-  {
-    title: "Go Somewhere New",
-    description:
-      "Visit one place you have never walked through before."
-  },
-
-  {
-    title: "Outside Without Purpose",
-    description:
-      "Leave the house without needing productivity."
-  },
-
-  {
-    title: "Social Expansion",
-    description:
-      "Message one person or have one small conversation."
-  },
-
-  {
-    title: "Weekend Freedom Quest",
-    description:
-      "Choose one meaningful place to ride or visit this weekend."
-  },
-
-  {
-    title: "Road Reflection",
-    description:
-      "Think while moving. Let the world reset your nervous system."
-  }
-];
-
-const dayPlans = [
-  {
-    week: "Week 1 — Wake The Snake",
-    quest: "Swap the usual bacon sandwich for a better lunch.",
-    cookingTitle: "Better Sandwich Day",
-    workoutTitle: "Wake The Body"
+      "You are rebuilding, not punishing yourself."
   }
 ];
 
@@ -275,10 +248,6 @@ function saveState() {
   );
 }
 
-function getTodayPlan() {
-  return dayPlans[0];
-}
-
 function getOverallScore() {
 
   return Math.round(
@@ -287,7 +256,7 @@ function getOverallScore() {
       state.fitness +
       state.strength +
       state.mind +
-      state.soul
+      state.sleep
     ) / 5
   );
 }
@@ -296,9 +265,6 @@ function updateHeader() {
 
   const overall =
     getOverallScore();
-
-  const plan =
-    getTodayPlan();
 
   document.getElementById(
     "overall-score"
@@ -315,18 +281,18 @@ function updateHeader() {
   ).innerHTML = `
 
     <strong>
-      ${plan.week}
+      Week 1 — Wake The Snake
     </strong>
 
     <em>
-      Day ${state.currentDay} Quest
+      Day ${state.currentDay}
     </em>
 
     <span>
       ${
         state.completedToday
           ? "✓ Done"
-          : plan.quest
+          : "Rebuild the system slowly and consistently."
       }
     </span>
 
@@ -357,40 +323,19 @@ function recordAction(type) {
     Math.floor(state.xp / 100) + 1;
 
   state.nutrition =
-    Math.min(
-      100,
-      state.nutrition + 4
-    );
+    Math.min(100, state.nutrition + 4);
 
   state.fitness =
-    Math.min(
-      100,
-      state.fitness + 3
-    );
+    Math.min(100, state.fitness + 3);
 
   state.strength =
-    Math.min(
-      100,
-      state.strength + 3
-    );
+    Math.min(100, state.strength + 3);
 
   state.mind =
-    Math.min(
-      100,
-      state.mind + 2
-    );
+    Math.min(100, state.mind + 2);
 
-  state.soul =
-    Math.min(
-      100,
-      state.soul + 2
-    );
-
-  state.mobility =
-    Math.min(
-      100,
-      state.mobility + 1
-    );
+  state.sleep =
+    Math.min(100, state.sleep + 2);
 
   const entry = {
     day: state.currentDay,
@@ -425,22 +370,7 @@ function updateLibraryField(
   value
 ) {
 
-  if (field === "mobility") {
-
-    state.mobility =
-      Math.max(
-        0,
-        Math.min(
-          100,
-          Number(value || 0)
-        )
-      );
-
-  } else {
-
-    state[field] = value;
-
-  }
+  state[field] = value;
 
   saveState();
 
@@ -492,7 +422,7 @@ function setActiveNav(page) {
     "cooking",
     "workouts",
     "mind",
-    "soul"
+    "sleep"
   ].forEach(item => {
 
     const button =
@@ -514,9 +444,6 @@ function renderHome() {
 
   const xpIntoLevel =
     state.xp % 100;
-
-  const plan =
-    getTodayPlan();
 
   document.getElementById(
     "content-panel"
@@ -566,36 +493,6 @@ function renderHome() {
       </div>
 
     </div>
-
-    <h4>Today</h4>
-
-    <div class="task-card">
-
-      <strong>
-        ${plan.cookingTitle}
-      </strong>
-
-      <span>
-        ${plan.quest}
-      </span>
-
-    </div>
-
-    <div class="task-card">
-
-      <strong>
-        ${plan.workoutTitle}
-      </strong>
-
-      <span>
-        Foundation movement day.
-      </span>
-
-    </div>
-
-    <button onclick="showRecordToday()">
-      Record Today
-    </button>
 
   `;
 }
@@ -675,22 +572,6 @@ function renderLibrary() {
         )">
 
     <label class="input-label">
-      Mobility / 100
-    </label>
-
-    <input
-      class="track-input"
-      type="number"
-      min="0"
-      max="100"
-      value="${state.mobility}"
-      onchange="
-        updateLibraryField(
-          'mobility',
-          this.value
-        )">
-
-    <label class="input-label">
       Overall Feeling
     </label>
 
@@ -725,11 +606,7 @@ function renderCooking() {
 
         <img
           src="${recipe.image}"
-          alt="${recipe.title}"
-          onerror="
-            this.src=
-            '/assets/images/missing_asset.png'
-          ">
+          alt="${recipe.title}">
 
         <span>
           ${recipe.title}
@@ -744,10 +621,6 @@ function renderCooking() {
   ).innerHTML = `
 
     <h3>Cooking</h3>
-
-    <p>
-      No nuts or celery.
-    </p>
 
     <div class="recipe-grid">
 
@@ -825,15 +698,6 @@ function renderRecipe(id) {
 
     </ol>
 
-    <button onclick="
-      recordAction(
-        'Cooking: ${recipe.title}'
-      )">
-
-      Tick Cooking Done
-
-    </button>
-
   `;
 }
 
@@ -863,15 +727,6 @@ function renderWorkouts() {
           }
 
         </ul>
-
-        <button onclick="
-          recordAction(
-            'Workout: ${workout.title}'
-          )">
-
-          Tick Workout Done
-
-        </button>
 
       </div>
 
@@ -903,15 +758,6 @@ function renderMind() {
           ${item.description}
         </span>
 
-        <button onclick="
-          recordAction(
-            'Mind: ${item.title}'
-          )">
-
-          Tick Mind Done
-
-        </button>
-
       </div>
 
     `).join("");
@@ -927,10 +773,10 @@ function renderMind() {
   `;
 }
 
-function renderSoul() {
+function renderSleep() {
 
   const cards =
-    soulLibrary.map(item => `
+    sleepLibrary.map(item => `
 
       <div class="task-card">
 
@@ -944,10 +790,10 @@ function renderSoul() {
 
         <button onclick="
           recordAction(
-            'Soul: ${item.title}'
+            'Sleep: ${item.title}'
           )">
 
-          Tick Soul Done
+          Tick Sleep Done
 
         </button>
 
@@ -959,7 +805,7 @@ function renderSoul() {
     "content-panel"
   ).innerHTML = `
 
-    <h3>Soul</h3>
+    <h3>Sleep</h3>
 
     ${cards}
 
@@ -1016,10 +862,10 @@ function showRecordToday() {
 
       <button onclick="
         recordAction(
-          'Soul Expansion'
+          'Sleep'
         )">
 
-        Soul
+        Sleep
 
       </button>
 
@@ -1049,8 +895,8 @@ function showPage(page) {
   if (page === "mind")
     return renderMind();
 
-  if (page === "soul")
-    return renderSoul();
+  if (page === "sleep")
+    return renderSleep();
 }
 
 function createEmbers() {
