@@ -92,11 +92,12 @@ function resetState() {
 }
 
 function updateScores() {
-  document.getElementById("nutrition-score").innerText = state.nutrition + "%";
-  document.getElementById("fitness-score").innerText = state.fitness + "%";
-  document.getElementById("strength-score").innerText = state.strength + "%";
-  document.getElementById("mind-score").innerText = state.mind + "%";
-  document.getElementById("soul-score").innerText = state.soul + "%";
+  const stats = ["nutrition", "fitness", "strength", "mind", "soul"];
+
+  stats.forEach(stat => {
+    document.getElementById(`${stat}-score`).innerText = state[stat] + "%";
+    document.getElementById(`${stat}-fill`).style.width = state[stat] + "%";
+  });
 }
 
 function renderLog() {
